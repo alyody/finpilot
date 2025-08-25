@@ -1,6 +1,6 @@
 [build]
   # Build command
-  command = "npm run build"
+  command = "npm ci && npm run build"
   
   # Publish directory (where the built files are)
   publish = "dist"
@@ -9,8 +9,8 @@
   # Node version
   NODE_VERSION = "18"
   
-  # Use production environment
-  NODE_ENV = "production"
+  # Don't set NODE_ENV to production during build to allow devDependencies
+  NPM_FLAGS = "--production=false"
 
 # Redirect all requests to index.html for React Router
 [[redirects]]
