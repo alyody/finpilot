@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13-alpine
+    container_name: finpilot_postgres
+    environment:
+      POSTGRES_DB: finpilot
+      POSTGRES_USER: finpilot_user
+      POSTGRES_PASSWORD: finpilot_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - finpilot_network
+
+  # Backend API
+  api:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: finpilot_api
+    environment:
+      DATABASE_URL: "postgresql://finpilot_user:finpilot_password@postgres:5432/finpilot"
+      JWT_SECRET: "your-super-secret-jwt-key-here-minimum-32-characters-long"
+      NODE_ENV: "development"
+      PORT: 5000
+      CORS_ORIGIN: "http://localhost:5173"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    networks:
+      - finpilot_network
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Frontend React App
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: finpilot_frontend
+    environment:
+      VITE_API_URL: "http://localhost:5000/api"
+      VITE_API_BASE_URL: "http://localhost:5000"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    networks:
+      - finpilot_network
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: npm run dev
+
+volumes:
+  postgres_data:
+
+networks:
+  finpilot_network:
+    driver: bridge

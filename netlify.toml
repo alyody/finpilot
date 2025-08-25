@@ -1,0 +1,12 @@
+[build]
+  publish = "client/dist"
+  command = "cd client && npm install && npm run build"
+
+[build.environment]
+  VITE_API_URL = "https://your-backend-url.onrender.com/api"
+  VITE_API_BASE_URL = "https://your-backend-url.onrender.com"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

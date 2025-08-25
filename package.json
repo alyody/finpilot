@@ -1,0 +1,43 @@
+{
+  "name": "finpilot",
+  "version": "1.0.0",
+  "description": "Enterprise Finance Platform - Expense Management Application",
+  "main": "server/server.js",
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install && cd ..",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "client:dev": "cd client && npm run dev",
+    "server:dev": "cd server && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "db:setup": "cd server && npx prisma generate && npx prisma migrate dev && npx prisma db seed",
+    "db:migrate": "cd server && npx prisma migrate dev",
+    "db:seed": "cd server && npx prisma db seed",
+    "db:studio": "cd server && npx prisma studio",
+    "lint": "cd client && npm run lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "finance",
+    "expense-management",
+    "react",
+    "typescript",
+    "express",
+    "postgresql",
+    "prisma"
+  ],
+  "author": "FinPilot Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/finpilot.git"
+  },
+  "homepage": "https://your-finpilot-app.netlify.app"
+}

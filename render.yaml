@@ -1,0 +1,29 @@
+# render.yaml - Render deployment configuration
+services:
+  # Backend API Service
+  - type: web
+    name: finpilot-api
+    env: node
+    buildCommand: cd server && npm install && npx prisma generate
+    startCommand: cd server && npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+
+  # Frontend Web Service  
+  - type: web
+    name: finpilot-frontend
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: client/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://finpilot-api.onrender.com/api
+      - key: VITE_API_BASE_URL
+        value: https://finpilot-api.onrender.com
