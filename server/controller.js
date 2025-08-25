@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../../prisma/prisma.js';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const generateToken = (userId) => {
     return jwt.sign({ userId }, process.env.JWT_SECRET, {
